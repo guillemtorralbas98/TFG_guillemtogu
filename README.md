@@ -1,2 +1,2 @@
-# TFG_guillem
+# TFG_guillemtogu
 El treball consisteix en el desenvolupament d'una mètrica original per calcular la distància entre posicions d'escacs. Per assolir-ho, s'ha integrat el mètode divide-and-conquer juntament amb classical MDS per projectar i visualitzar l'espai de les partides en dues dimensions. En aquest repositori hi ha el codi que s'ha utilitzat per realitzar tot el procés: des del processament de les partides en format PGN, passant per la definició de la distància, realitzant el divide-and-conquer MDS i graficar-ne els resultats.
