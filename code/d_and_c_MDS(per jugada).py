@@ -1,4 +1,4 @@
-# ARXIU 4: Divide & Conquer + classical MDS (per jugada)
+# ARXIU 4: Divide & Conquer + classical MDS (per jugada) + càlcul de dimensionalitat
 
 import os
 import warnings
@@ -103,31 +103,23 @@ for i, nom_fitxer in enumerate(fitxers_parquet):
     if n_unics <= 2:
         dimensions_necessaries = 1
     else:
-        # Mostreig de partides (no posicions úniques) per ponderar la
-        # dimensionalitat per la freqüència real de cada posició.
         mida = min(mida_mostra_dim, df.height)
         idx_partides = np.random.choice(df.height, size=mida, replace=False)
 
-        # Cada partida mostrejada → índex a board_fens_unics (amb repeticions)
         bf_a_idx = {bf: j for j, bf in enumerate(board_fens_unics)}
         idx_unics_mostra = np.array(
             [bf_a_idx[board_fens_totals[i]] for i in idx_partides]
         )
 
-        # Deduplicar dins la mostra; 'inverse' permetrà expandir després
         idx_unics_presents, inverse = np.unique(idx_unics_mostra, return_inverse=True)
 
-        # Reutilitzar la matriu si ja la tenim, o calcular-la només sobre el subconjunt
         if matriu_per_dim is not None:
             matriu_unics = matriu_per_dim[idx_unics_presents][:, idx_unics_presents]
         else:
             matriu_unics = calcular_matriu_distancies(
                 coords_all[idx_unics_presents], lens_all[idx_unics_presents]
             )
-
-        # Expandir a matriu mida x mida amb les multiplicitats de la mostra.
-        # Això és matemàticament equivalent a haver fet Hungarian sobre les
-        # 2000 posicions directament, però evita repetir el càlcul.
+            
         matriu_dim = matriu_unics[inverse][:, inverse]
 
         n_calc      = matriu_dim.shape[0]
